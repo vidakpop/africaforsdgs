@@ -1,0 +1,537 @@
+
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Home - AfricaforSDGS{% endblock %}
+
+{% block content %}
+<header>
+    <div class="container">
+        <div class="header-info-par">
+            <h1 class="typewrite" data-period="2000" data-type='["Making the World a Better Place", "Join Us in Our Mission", "Together We Can Achieve More"]'>
+            </h1>
+            <p>AfricaforSDGS is committed to achieving the Sustainable Development Goals (SDGs) and making a lasting impact on the world.</p>
+            <a href="/#about-us" class="a">Learn More</a>
+        </div>
+        <div class="video">
+            <video id="video" autoplay loop muted>
+                <source src="{% static 'images/ngo.mp4' %}" type="video/mp4" />
+            </video>
+        </div>
+    </div>
+</header>
+
+<section id="welcome-text">
+    <div class="container">
+        <h2>Welcome to AfricaforSDGS
+        </h2>
+        <p>At AfricaforSdgs, we are committed to empowering the African youth for sustainable development. </p>
+    </div>
+</section>
+   <!-- Slides Section Start-->
+   <section id="slides-par">
+    <div class="container">
+        <div class="slides">
+            <div class="slide_1" style="background-image: linear-gradient(rgba(0,0,0,0.5),rgba(0,0,0,0.5)), url('static/images/recipe_slides/education.jpg');">
+                <div class="slide-info">
+                    <p>Education</p>
+                </div>
+            </div>
+            <div class="slide_1" style="background-image: linear-gradient(rgba(0,0,0,0.5),rgba(0,0,0,0.5)), url('static/images/recipe_slides/health.jpeg');">
+                <div class="slide-info">
+                    <p>Health</p>
+                </div>
+            </div>
+            <div class="slide_1" style="background-image: linear-gradient(rgba(0,0,0,0.5),rgba(0,0,0,0.5)), url('static/images/recipe_slides/equality.jpeg');">
+                <div class="slide-info">
+                    <p>Gender & Equality</p>
+                </div>
+            </div>
+            <div class="slide_1" style="background-image: linear-gradient(rgba(0,0,0,0.5),rgba(0,0,0,0.5)), url('static/images/recipe_slides/environment.jpg');">
+                <div class="slide-info">
+                    <p>Environmental sustainability</p>
+                </div>
+            </div>
+            <div class="slide_1" style="background-image: linear-gradient(rgba(0,0,0,0.5),rgba(0,0,0,0.5)), url('static/images/recipe_slides/community.jpeg');">
+                <div class="slide-info">
+                    <p>Community Empowerment</p>
+                </div>
+            </div>
+            <div class="slide_1" style="background-image: linear-gradient(rgba(0,0,0,0.5),rgba(0,0,0,0.5)), url('static/images/recipe_slides/youth.jpeg');">
+                <div class="slide-info">
+                    <p>Youth Empowerment</p>
+                </div>
+            </div>
+            <div class="slide_1" style="background-image: linear-gradient(rgba(0,0,0,0.5),rgba(0,0,0,0.5)), url('static/images/recipe_slides/hunger.jpeg');">
+                <div class="slide-info">
+                    <p>Zero Hunger</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Toast Notification -->
+<div id="toast" class="toast" style="position: fixed; top: 20px; right: 20px; min-width: 300px; background-color: #4CAF50; color: white; padding: 16px; border-radius: 4px; display: none; z-index: 1000;">
+    <span id="toast-message"></span>
+</div>
+
+<script>
+    document.querySelector('form').onsubmit = function(e) {
+        e.preventDefault();
+        const form = e.target;
+        fetch(form.action, {
+            method: 'POST',
+            body: new FormData(form),
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+            },
+        })
+        .then(response => response.json())
+        .then(data => {
+            const toast = document.getElementById('toast');
+            const message = document.getElementById('toast-message');
+            message.innerText = data.message;
+            toast.style.display = 'block';
+            toast.style.backgroundColor = data.error ? '#f44336' : '#4CAF50';
+
+            setTimeout(() => {
+                toast.style.display = 'none';
+            }, 5000);
+        })
+        .catch(error => {
+            const toast = document.getElementById('toast');
+            const message = document.getElementById('toast-message');
+            message.innerText = 'An error occurred. Please try again.';
+            toast.style.display = 'block';
+            toast.style.backgroundColor = '#f44336';
+
+            setTimeout(() => {
+                toast.style.display = 'none';
+            }, 5000);
+        });
+    };
+</script>
+
+
+<!-- Slides Section Start-->
+
+<!-- Gallery Section Starts -->
+<section id="gallery">
+    <div class="container">
+        <div class="row">
+            <div align="center" class="filter-btn-par">
+                <button class="filter-button" data-filter="all">ALL</button>
+                {%for category in categories%}
+                <button class="filter-button" data-filter="{{category.name|slugify}}">{{category.name}}</button>
+                {% endfor %}
+            </div>
+            <div class="filter-gal-par">
+                {% for image in images  %}
+                <div class="gallery-item filter {{image.category.name|slugify}}">
+                    <img src="{{image.image.url}}" alt="{{image.description}}" class="img-responsive">
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Gallery Section Ends -->
+
+<!-- Multiple Slider Section Starts -->
+ <style>
+    .owl-carousel .item {
+        position: relative;
+        text-align: center;
+    }
+    
+    .owl-carousel .owl-img-par {
+        position: relative;
+        width: 100%;
+        height: 300px; /* Set a fixed height for the container */
+        overflow: hidden;
+    }
+    
+    .owl-carousel .owl-img-par img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover; /* Ensures the image covers the container while maintaining aspect ratio */
+        display: block;
+    }
+    
+    
+ </style>
+ 
+<section id="water-slider">
+    <div class="container">
+        <h3>Explore Our Upcoming Events</h3>
+        <div class="owl-carousel owl-theme">
+            {% for event in events %}
+            <div class="item">
+                <div class="owl-img-par">
+                    <img src="{{ event.image.url }}" alt="" class="img-responsive" />
+                    <div class="owl-img-info">
+                        <h3>Location: {{ event.location }}</h3>
+                        <p>Date: {{ event.date|date:"F j, Y, g:i a" }}</p>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- Multiple Slider Section Ends -->
+
+
+<section id="book" style="background-image: linear-gradient(rgba(0,0,0,0.5),rgba(0,0,0,0.5)), url('{% static 'images/sdg2.jpg' %}'); background-attachment: fixed; background-position: center center; background-repeat: no-repeat; background-size: cover; padding: 100px 0px; color: #fff;">
+    <div class="container">
+        <div class="book-content-par">
+            <div class="book-counter">
+                <h3>Book Now</h3>
+                <div id="clockdiv">
+                    <div>
+                        <span class="days"></span>
+                        <div class="smalltext">Days</div>
+                    </div>
+                    <div>
+                        <span class="hours"></span>
+                        <div class="smalltext">Hours</div>
+                    </div>
+                    <div>
+                        <span class="minutes"></span>
+                        <div class="smalltext">Minutes</div>
+                    </div>
+                    <div>
+                        <span class="seconds"></span>
+                        <div class="smalltext">Seconds</div>
+                    </div>
+                </div>
+            </div>
+            {% if most_upcoming_event %}
+            <div class="event-details" style="margin-top: 40px; background-color: rgba(255, 255, 255, 0.1); padding: 20px; border-radius: 10px;">
+                <img src="{{ most_upcoming_event.image.url }}" alt="{{ most_upcoming_event.title }}" style="width: 100%; height: auto; border-radius: 10px;">
+                <h4 style="margin-top: 20px; font-size: 28px; color: #ffd700;">{{ most_upcoming_event.title }}</h4>
+                <p>{{ most_upcoming_event.description }}</p>
+                <p>Date: {{ most_upcoming_event.date|date:"F j, Y, g:i a" }}</p>
+                <form method="post" action="{% url 'book_event' most_upcoming_event.id %}" id="booking-form">
+                    {% csrf_token %}
+                    <input type="text" id="name" name="name" placeholder="Your Name..." required style="width: 100%; padding: 10px; margin: 10px 0; border-radius: 5px; border: none;">
+                    <input type="text" id="phone_number" name="phone_number" placeholder="Your Phone Number..." required style="width: 100%; padding: 10px; margin: 10px 0; border-radius: 5px; border: none;">
+                    <input type="email" id="email" name="email" placeholder="Your Email..." required style="width: 100%; padding: 10px; margin: 10px 0; border-radius: 5px; border: none;">
+                    <input type="submit" value="Book Now" style="width: 100%; padding: 10px; border-radius: 5px; border: none; background-color: #ffd700; color: #000; font-size: 16px; cursor: pointer;">
+                </form>
+            </div>
+            {% else %}
+            <p>No upcoming events available at the moment.</p>
+            {% endif %}
+        </div>
+    </div>
+</section>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+
+<script>
+    function getTimeRemaining(endtime) {
+        const t = Date.parse(endtime) - Date.parse(new Date());
+        const seconds = Math.floor((t / 1000) % 60);
+        const minutes = Math.floor((t / 1000 / 60) % 60);
+        const hours = Math.floor((t / 1000 / 60 / 60) % 24);
+        const days = Math.floor(t / (1000 * 60 * 60 * 24));
+        return {
+          'total': t,
+          'days': days,
+          'hours': hours,
+          'minutes': minutes,
+          'seconds': seconds
+        };
+      }
+      
+      function initializeClock(id, endtime) {
+        const clock = document.getElementById(id);
+        const daysSpan = clock.querySelector('.days');
+        const hoursSpan = clock.querySelector('.hours');
+        const minutesSpan = clock.querySelector('.minutes');
+        const secondsSpan = clock.querySelector('.seconds');
+      
+        function updateClock() {
+          const t = getTimeRemaining(endtime);
+      
+          daysSpan.innerHTML = t.days;
+          hoursSpan.innerHTML = ('0' + t.hours).slice(-2);
+          minutesSpan.innerHTML = ('0' + t.minutes).slice(-2);
+          secondsSpan.innerHTML = ('0' + t.seconds).slice(-2);
+      
+          if (t.total <= 0) {
+            clearInterval(timeinterval);
+          }
+        }
+      
+        updateClock();
+        const timeinterval = setInterval(updateClock, 1000);
+      }
+      
+      document.addEventListener('DOMContentLoaded', (event) => {
+          var eventDate = moment("{{ most_upcoming_event_date|date:'Y-m-d H:i:s'|escapejs }}", "YYYY-MM-DD HH:mm:ss").toDate();
+          initializeClock('clockdiv', eventDate);
+      });
+      
+</script>
+
+
+
+<section id="location">
+    <div class="container">
+        <h2>Our Location</h2>
+        <p>Find us at our main office located at Africa for SDGs. We are open to visitors and inquiries during business hours from 9:00 AM to 5:00 PM, Monday to Friday.</p>
+        
+        <!-- Styled Google Map -->
+        <div id="map-container" style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 15px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3396.76222899159!2d36.82075387415264!3d-1.2568630987311706!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x182f1752e5f6c6ed%3A0xd68e3f12a20d53b4!2sAfrica%20for%20SDGs!5e1!3m2!1sen!2ske!4v1723995164920!5m2!1sen!2ske" 
+            width="600" 
+            height="450" 
+            style="border:0; position: absolute; top: 0; left: 0; width: 100%; height: 100%;" 
+            allowfullscreen="" 
+            loading="lazy" 
+            referrerpolicy="no-referrer-when-downgrade"></iframe>
+        </div>
+    </div>
+</section>
+
+<section id="about-us">
+    <div class="container">
+        <h2>About Us</h2>
+        <p>At the core of our mission is the belief that empowering the youth, particularly in Africa, is paramount to achieving the Sustainable Development Goals (SDGs) as outlined by the United Nations. Our organization is committed to creating a future where the potential of African youth is fully realized, and where they are equipped with the tools, knowledge, and opportunities necessary to contribute meaningfully to society.</p>
+        <p>We are steadfast in our pursuit of eradicating poverty, promoting quality education, ensuring access to healthcare, fostering gender equality, and protecting the environment. We believe that by investing in the young minds of Africa, we are planting the seeds for a sustainable future—one where every individual can thrive, and where communities are resilient, innovative, and prosperous.</p>
+        <p>Our programs are designed to align with the global SDGs, but we tailor our approach to address the unique challenges faced by African youth. We aim to provide access to education, training, and mentorship, empowering young people to become leaders in their communities and advocates for change. By focusing on skills development, entrepreneurship, and civic engagement, we seek to unlock the potential of Africa’s youth and drive sustainable development from the grassroots level.</p>
+        <p>We understand that achieving sustainable development requires a holistic approach. Therefore, our initiatives are designed not only to address immediate needs but also to build long-term resilience. We work closely with local communities, governments, and international partners to create solutions that are both culturally relevant and scalable, ensuring that the benefits of our work are felt far and wide.</p>
+        <br>
+        <h3>Our Vision</h3>
+        <p>Our vision is of a world where every young person in Africa has access to basic human rights and opportunities, living in harmony with the environment. We envision a future where the youth are at the forefront of innovation, driving economic growth, and leading efforts to protect the planet for generations to come. By empowering the African youth, we are not just working towards achieving the SDGs—we are building a legacy of sustainable development that will endure long into the future.</p>
+    </div>
+</section>
+
+<br>
+<br>
+<section id="contact" style="padding: 50px 0; background-color: #f7f7f7;">
+    <div class="container">
+        <h2>Contact Us</h2>
+        <p>We would love to hear from you. Feel free to reach out through any of the methods below.</p>
+        
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+            <!-- Contact Details -->
+            <div style="flex: 1;">
+                <div style="margin-bottom: 20px;">
+                    <img src="{% static 'icons/phone.gif' %}" alt="Phone" style="width: 24px; height: 24px;">
+                    <a href="tel:+2544567890" style="text-decoration: none; color: #333; margin-left: 10px;">+254 456 7890</a>
+                </div>
+                <div style="margin-bottom: 20px;">
+                    <img src="{% static 'icons/mail.gif' %}" alt="Email" style="width: 24px; height: 24px;">
+                    <a href="mailto:infor@africaforsdgs.com" style="text-decoration: none; color: #333; margin-left: 10px;">infor@africaforsdgs.com</a>
+                </div>
+            </div>
+
+            <!-- Social Media Icons -->
+            <div style="flex: 1; text-align: right;">
+                <a href="https://www.instagram.com/africaforsdgs" target="_blank" style="margin-left: 15px;">
+                    <img src="{% static 'icons/instagram.gif' %}" alt="Instagram" style="width: 32px; height: 32px;">
+                </a>
+                <a href="https://www.tiktok.com/@africaforsdgs" target="_blank" style="margin-left: 15px;">
+                    <img src="{% static 'icons/tiktok.gif' %}" alt="TikTok" style="width: 32px; height: 32px;">
+                </a>
+            </div>
+        </div>
+
+        
+    </div>
+</section>
+
+<style>#location, #about-us, #contact {
+    background-color: #f5f5f5;
+    padding: 50px 0;
+    border-radius: 10px;
+    margin-bottom: 50px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+#location h2, #about-us h2, #contact h2 {
+    color: #000;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 36px;
+    margin-bottom: 20px;
+    text-align: center;
+    font-weight: bold;
+    color: #DAA520; /* Gold */
+}
+
+#location p, #about-us p, #contact p {
+    color: #333;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 18px;
+    line-height: 1.6;
+    text-align: center;
+    max-width: 800px;
+    margin: 0 auto 20px auto;
+}
+
+#about-us h3 {
+    color: #000;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 28px;
+    margin-bottom: 15px;
+    text-align: center;
+    font-weight: bold;
+    color: #DAA520; /* Black */
+}
+
+#contact .form-group {
+    margin-bottom: 20px;
+}
+
+#contact .form-group label {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 16px;
+    color: #333;
+    display: block;
+    margin-bottom: 5px;
+}
+
+#contact .form-group input, #contact .form-group textarea {
+    width: 100%;
+    padding: 10px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #fff;
+}
+
+#contact .form-group input:focus, #contact .form-group textarea:focus {
+    outline: none;
+    border-color: #DAA520; /* Gold */
+}
+
+#contact button[type="submit"] {
+    background-color: #000; /* Black */
+    color: #fff;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 16px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+#contact button[type="submit"]:hover {
+    background-color: #DAA520; /* Gold */
+}
+</style>
+
+<!-- Add this to the bottom of your home.html -->
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    document.querySelector('#booking-form').addEventListener('submit', function(event) {
+        event.preventDefault();
+        const form = event.target;
+        const formData = new FormData(form);
+    
+        // Notify user to wait for a response
+        Swal.fire({
+            title: 'Processing...',
+            text: 'Please wait while we process your booking.',
+            allowOutsideClick: false,
+            didOpen: () => {
+                Swal.showLoading();
+            }
+        });
+    
+        fetch(form.action, {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        })
+        .then(response => {
+            Swal.close();
+            if (response.ok) {
+                return response.text();
+            } else if (response.status === 400) {
+                // Handle 400 error for duplicate email or phone number
+                Swal.fire({
+                    title: 'Warning!',
+                    text: 'This email or phone number has already been used for booking.',
+                    icon: 'warning',
+                    confirmButtonText: 'OK'
+                });
+                return Promise.reject('400 Bad Request');
+            } else {
+                Swal.fire({
+                    title: 'Error!',
+                    text: 'There was an error processing your booking. Please try again later.',
+                    icon: 'error',
+                    confirmButtonText: 'OK'
+                });
+                return Promise.reject('Other Error');
+            }
+        })
+        .then(data => {
+            if (data === "Success") {
+                // Display success popup
+                Swal.fire({
+                    title: 'Booking Successful!',
+                    text: 'You have successfully booked. Please check your email for the confirmation and ticket. If you do not see the email, please check your spam box.',
+                    icon: 'success',
+                    confirmButtonText: 'OK'
+                });
+    
+                // Clear the input fields
+                form.reset();
+    
+                // Optional: Add toast notification
+                const toast = document.createElement('div');
+                toast.className = 'toast';
+                toast.innerText = 'Booking successful!';
+                document.body.appendChild(toast);
+    
+                setTimeout(() => {
+                    toast.remove();
+                }, 3000);
+            }
+        })
+        .catch(error => {
+            if (error !== '400 Bad Request' && error !== 'Other Error') {
+                console.error('Error:', error);
+                Swal.close();
+                Swal.fire({
+                    title: 'Error!',
+                    text: 'There was an error processing your booking. Please try again later.',
+                    icon: 'error',
+                    confirmButtonText: 'OK'
+                });
+            }
+        });
+    });
+    
+    // Optional: Add CSS for the toast notification
+    const style = document.createElement('style');
+    style.innerHTML = `
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            padding: 10px;
+            background-color: #28a745;
+            color: white;
+            border-radius: 5px;
+            z-index: 1000;
+            opacity: 0.9;
+        }
+    `;
+    document.head.appendChild(style);
+    
+    
+</script>
+
+{% endblock %}
